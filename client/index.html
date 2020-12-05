@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <title>Productos</title>
+    <style>
+      main > .jumbotron {
+        background-image: url("./images/jumbotron_bg.jpg");
+        background-size: cover;
+        background-position: 0 -500px;
+        background-attachment: fixed;
+      }
+      .img-thumbnail {
+        width: 200px;
+        height: 200px;
+      }
+      .card-img-top {
+        height: 150px;
+        max-width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toast Success -->
+    <div
+      id="toastSuccess"
+      role="alert"
+      class="toast"
+      data-delay="2000"
+      style="position: absolute; bottom: 1rem; right: 1rem; z-index: 999"
+    >
+      <div class="toast-header">
+        <strong class="mr-auto">PC Tech</strong>
+      </div>
+      <div class="toast-body">Te has registrado correctamente!</div>
+    </div>
+
+    <!-- Toast Product -->
+    <div
+      id="toastProduct"
+      role="alert"
+      class="toast"
+      data-delay="2000"
+      style="position: absolute; bottom: 1rem; right: 1rem; z-index: 999"
+    >
+      <div class="toast-header">
+        <strong class="mr-auto">PC Tech</strong>
+      </div>
+      <div class="toast-body">Producto agregado correctamente!</div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addProductModal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProductModalLabel">Agregar producto</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="productForm">
+              <div class="form-group">
+                <label for="fNombre">Nombre</label>
+                <input type="text" class="form-control" id="fNombre" name="name" required />
+              </div>
+              <div class="form-group">
+                <label for="fCategoria">Categoría</label>
+                <select class="form-control" id="fCategoria" name="category" required>
+                  <option value="Procesador">Procesador</option>
+                  <option value="Teclado">Teclado</option>
+                  <option value="Bocina">Bocina</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fPrecio">Precio</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                  </div>
+                  <input type="number" class="form-control" id="fPrecio" name="price" min="0" required />
+                  <div class="input-group-append">
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="fMarca">Marca</label>
+                <input type="text" class="form-control" id="fMarca" name="brand" required />
+              </div>
+              <div class="form-group">
+                <label for="fImagen">Imagen</label>
+                <img id="fImagenPreview" src="" alt="-Imagen del producto" class="img-thumbnail d-block mb-2" />
+                <input type="file" class="form-control-file" id="fImagen" name="image" required />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="btnSubmitProduct" type="submit" class="btn btn-primary" data-dismiss="modal" form="productForm">
+              Agregar
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">PC Tech</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <form id="authForm" class="form-inline my-2 my-lg-0 ml-auto">
+            <input class="form-control mr-sm-2" type="email" placeholder="Correo Electrónico" name="email" required />
+            <input class="form-control mr-sm-2" type="password" placeholder="Contraseña" name="password" required />
+            <div class="btn-group">
+              <button id="btnLogin" class="btn btn-primary" type="submit">Iniciar sesión</button>
+              <button id="btnSignupUser" class="btn btn-outline-secondary" type="submit">Registrar</button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown"
+              ></button>
+              <div class="dropdown-menu">
+                <a id="btnSignupAdmin" class="dropdown-item" type="submit" form="authForm">Registrar como Admin</a>
+              </div>
+            </div>
+          </form>
+          <div id="userInfo" class="d-flex ml-auto align-items-center">
+            <h6 id="userEmail" class="text-light mb-0 mr-4"></h6>
+            <button id="btnLogout" class="btn btn-outline-danger my-2 my-sm-0">Cerrar sesión</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <div class="jumbotron jumbotron-fluid text-light">
+        <div class="container">
+          <h1 class="display-4">PC Tech</h1>
+          <p class="lead">Tu mejor opción en componentes y periféricos para tu PC!</p>
+        </div>
+      </div>
+
+      <!-- Not logged View -->
+      <div id="notLogged" class="container">
+        <div class="p-5 text-center">
+          <h1 class="display-1 mb-4"><strong>⭐VIP⭐</strong></h1>
+          <h1 class="text-danger mb-4">Oops! No tienes acceso a la tienda... 😟</h1>
+          <h3>Empieza creando una cuenta! 🎉</h3>
+        </div>
+      </div>
+
+      <!-- User/Admin View -->
+      <div id="logged" class="container">
+        <button
+          type="button"
+          id="btnAddProduct"
+          class="btn btn-success btn-lg btn-block mb-5"
+          data-toggle="modal"
+          data-target="#addProductModal"
+        >
+          ➕ Agregar producto
+        </button>
+
+        <section id="todo">
+          <div class="row"></div>
+        </section>
+
+        <section id="procesadores">
+          <div class="jumbotron">
+            <h3>Procesadores</h3>
+          </div>
+          <div class="row"></div>
+        </section>
+
+        <section id="teclados">
+          <div class="jumbotron">
+            <h3>Teclados</h3>
+          </div>
+          <div class="row"></div>
+        </section>
+
+        <section id="bocinas">
+          <div class="jumbotron">
+            <h3>Bocinas</h3>
+          </div>
+          <div class="row"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-4 bg-dark text-light align-middle">
+      <div class="container"><p class="text-center mb-0">Salvador de Jesus Gomez Cuevas &copy 2020</p></div>
+    </footer>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js"></script>
+  </body>
+</html>
